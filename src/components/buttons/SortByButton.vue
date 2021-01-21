@@ -1,11 +1,27 @@
 <template>
-  <button>
-    Sort by: PnL
+  <button @click="onClick">
+    Sort by: {{text}}
   </button>
 </template>
 
 <script>
+const orderDict = {
+  pnl: 'PnL',
+  none: 'None'
+}
+
 export default {
+  props: ['order'],
+  computed: {
+    text () {
+      return orderDict[this.order]
+    }
+  },
+  methods: {
+    onClick () {
+      this.$emit('clicked')
+    }
+  }
 }
 </script>
 
@@ -21,7 +37,7 @@ button {
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-  width: 97px;
+  width: 100px;
   height: 34px;
   background: #fff;
   color: #959CBD;

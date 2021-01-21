@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <page-header/>
-    <filter-header/>
+    <filter-header @filter="onFilter" @order="onOrderBy"/>
     <div class="items">
-      <template v-for="item of items">
+      <template v-for="item of filteredAndOrderedData">
         <basket-card class="card" v-if="item.type === 'basket'" :key="item.id" :item="item"/>
         <bot-card class="card" v-if="item.type === 'bot'" :key="item.id" :item="item"/>
       </template>
@@ -38,8 +38,35 @@ export default {
     BasketCard,
     BotCard
   },
+  methods: {
+    onFilter (type) {
+      this.filter = type
+    },
+    onOrderBy (order) {
+      this.order = order
+    }
+  },
+  computed: {
+    filteredAndOrderedData () {
+      let data = this.items
+      if (this.filter !== 'all') {
+        data = this.items.filter(i => i.type === this.filter)
+      } else {
+        data = this.items
+      }
+
+      if (this.order !== 'none') {
+        return data.sort((a, b) => a[this.order] - b[this.order])
+      } else {
+        // default (none) ordering is by id
+        return data.sort((a, b) => a.id - b.id)
+      }
+    }
+  },
   data () {
     return {
+      filter: 'all',
+      order: 'none',
       items: [
         {
           id: 1,
@@ -240,7 +267,7 @@ export default {
 
 .card {
   flex: 1 0 21%;
-  width: 280px;
+  max-width: 400px;
   height: 370px;
   margin-bottom: 32px;
   margin-right: 28px;
@@ -248,5 +275,21 @@ export default {
 
 .card:hover {
   box-shadow: 0px 4px 19px rgba(81, 81, 189, 0.19);
+}
+
+@media (max-width: 320px) {
+  .items {
+    margin: 40px 12px 0px 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .items {
+    margin: 40px 20px 0px 20px;
+  }
+  .card {
+    max-width: unset;
+    margin-right: 0;
+  }
 }
 </style>

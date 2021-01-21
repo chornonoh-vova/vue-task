@@ -43,4 +43,25 @@ export default {
     flex-grow: 1;
   }
 }
+
+@media (max-width: 550px) {
+  .header-decide {
+    display: none;
+  }
+}
+
+@media (max-width: 320px) {
+  .header {
+    margin: 0px 12px 20px 12px;
+  }
+  .header-compare {
+    display: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .header {
+    margin: 0px 20px 20px 20px;
+  }
+}
 </style>
